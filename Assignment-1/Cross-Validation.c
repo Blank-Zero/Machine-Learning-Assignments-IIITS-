@@ -116,7 +116,7 @@ int main()
     for(i=0;i<30;i++){
       for (j=0;j<180;j++){
         distace_of_test=Minkowski_distance(p,train[j]->area-test[i]->area,train[j]->perimeter-test[i]->perimeter,train[j]->compactness-test[i]->compactness,train[j]->length_of_kernel-test[i]->length_of_kernel,train[j]->width_of_kernel-test[i]->width_of_kernel,train[j]->asymmetry_coefficient-test[i]->asymmetry_coefficient,train[j]->length_of_kernel_groove-test[i]->length_of_kernel_groove);
-        printf("%f",distace_of_test);
+        printf("%f\n",distace_of_test);
       }
     }
 
