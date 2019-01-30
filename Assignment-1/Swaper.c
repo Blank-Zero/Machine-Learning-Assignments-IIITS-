@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<time.h>
 
 typedef struct set
 {
@@ -14,32 +15,6 @@ typedef struct set
     float length_of_kernel_groove;
     int class;
 } SET;
-
-
-// void read_values(FILE *fptr)
-// {
-//     float i = 0;
-//     fscanf(fptr,"%f",&i);
-//     printf("%f\n",i);
-
-//     int count = 8;
-//     while(!feof(fptr) && count > 0)
-//     {
-//         fscanf(fptr,"%f",&i);
-//         printf("%f\n",i);
-//         --count;
-//     }
-//     return;
-// }
-
-void WriteTestValues(SET *test[],int n)
-{
-    int i;
-    for(i=0;i<n;i++){
-        printf("%f\t%f\t%f\n",test[i]->area,test[i]->perimeter,test[i]->compactness);
-    }
-
-}
 
 void ReadAll(FILE *fptr,SET *data[],int max)
 {
@@ -59,9 +34,26 @@ void ReadAll(FILE *fptr,SET *data[],int max)
     }
 }
 
+void Swap(int *a,int *b)
+{
+    *a = *a ^ *b;
+    *b = *a ^ *b;
+    *a = *a ^ *b;
+    return;
+}
+
+void DataSwap(SET *data[],SET *newdata[],int num[],int max)
+{
+    int i;
+    for(i=0;i<max;i++)
+        newdata[i] = data[num[i]];    
+    return;
+}
+
 int main()
 {
-    // printf("Hello world");
+    srand((unsigned int)time(NULL));
+
     FILE *filePointer;
     filePointer = fopen("seeds.txt","r");
 
@@ -71,37 +63,31 @@ int main()
         return 0;
     }
     printf("Works fine\n");
-    // read_values(filePointer);
-
+    
     SET *data[210];
 
     ReadAll(filePointer,data,210);
 
     fclose(filePointer);
-    // WriteTestValues(data[5]);
-    int i,r=7;
 
-    // SET *test;
-    // test=data[0];
-    // printf("%f\n",test->area );
-    SET *test[210/r];
-    SET *train[210-(210/r)];
-    for(i=0;i<7;i++){
-      int j;
-      for (j=30*i;j<30*(i+1);j++){
-        test[j-(30*i)]=data[j];
-      }
-      int limit=0;
-      for (j=0;j<210;j++){
-        if(j<30*i || j>=30*(i+1)){
-          train[limit]=data[j];
-          printf("%d\t%d\n",j,limit);
-          ++limit;
-        }
-      }
-    }
-    WriteTestValues(&test,30);
-    printf("\n\n");
-    WriteTestValues(&train,180);
+    int num[210];
+    int i;
+    for(i=0;i<210;i++)
+        num[i] = i;
+
+    for(i=0;i<1000;i++)
+        Swap(&(num[rand()%210]),&(num[rand()%210]));
+    
+    SET *newdata[210];
+    DataSwap(data,newdata,num,210);
+    
+    FILE *filewriter;
+    filewriter = fopen("SwapedSeeds.txt","w");
+    
+    for(i=0;i<210;i++)
+        fprintf(filewriter,"%f\t%f\t%f\t%f\t%f\t%f\t%f\t%d\n",newdata[i]->area,newdata[i]->perimeter,newdata[i]->compactness,newdata[i]->length_of_kernel,newdata[i]->width_of_kernel,newdata[i]->asymmetry_coefficient,newdata[i]->length_of_kernel_groove,newdata[i]->class);
+
+    fclose(filewriter);
+
     return 0;
 }
