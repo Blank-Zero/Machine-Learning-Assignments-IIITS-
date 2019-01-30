@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<math.h>
 
 typedef struct set
 {
@@ -36,7 +37,7 @@ void WriteTestValues(SET *test[],int n)
 {
     int i;
     for(i=0;i<n;i++){
-        printf("%f\t%f\t%f\n",test[i]->area,test[i]->perimeter,test[i]->compactness);
+        printf("%f\t%f\t%d\n",test[i]->area,test[i]->perimeter,test[i]->class);
     }
 
 }
@@ -59,11 +60,19 @@ void ReadAll(FILE *fptr,SET *data[],int max)
     }
 }
 
+float Minkowski_distance(int p,float area,float perimeter,float compactness,float length_of_kernel,float width_of_kernel,float asymmetry_coefficient,float length_of_kernel_groove){
+  double distance;
+  distance=pow(area,p)+pow(perimeter,p)+pow(compactness,p)+pow(length_of_kernel,p)+pow(width_of_kernel,p)+pow(asymmetry_coefficient,p)+pow(length_of_kernel_groove,p);
+  distance=pow(distance,1.0/p);
+  return distance;
+}
+
 int main()
 {
+    int i,j;
     // printf("Hello world");
     FILE *filePointer;
-    filePointer = fopen("seeds.txt","r");
+    filePointer = fopen("SwapedSeeds.txt","r");
 
     if(filePointer == NULL)
     {
@@ -79,7 +88,7 @@ int main()
 
     fclose(filePointer);
     // WriteTestValues(data[5]);
-    int i,r=7;
+    int r=7;
 
     // SET *test;
     // test=data[0];
@@ -87,7 +96,6 @@ int main()
     SET *test[210/r];
     SET *train[210-(210/r)];
     for(i=0;i<7;i++){
-      int j;
       for (j=30*i;j<30*(i+1);j++){
         test[j-(30*i)]=data[j];
       }
@@ -95,13 +103,26 @@ int main()
       for (j=0;j<210;j++){
         if(j<30*i || j>=30*(i+1)){
           train[limit]=data[j];
-          printf("%d\t%d\n",j,limit);
           ++limit;
         }
       }
     }
-    WriteTestValues(&test,30);
-    printf("\n\n");
-    WriteTestValues(&train,180);
+
+    //////        finding k and p values    ////////
+
+    int k=9,p=2;
+    float KNN[k];
+    float distace_of_test;
+    for(i=0;i<30;i++){
+      for (j=0;j<180;j++){
+        distace_of_test=Minkowski_distance(p,train[j]->area-test[i]->area,train[j]->perimeter-test[i]->perimeter,train[j]->compactness-test[i]->compactness,train[j]->length_of_kernel-test[i]->length_of_kernel,train[j]->width_of_kernel-test[i]->width_of_kernel,train[j]->asymmetry_coefficient-test[i]->asymmetry_coefficient,train[j]->length_of_kernel_groove-test[i]->length_of_kernel_groove);
+        printf("%f",distace_of_test);
+      }
+    }
+
+
+
+
+
     return 0;
 }
