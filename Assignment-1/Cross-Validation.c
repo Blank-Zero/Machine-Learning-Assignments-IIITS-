@@ -73,6 +73,7 @@ int main()
 
     ReadAll(filePointer,data,210);
 
+    fclose(filePointer);
     // WriteTestValues(data[5]);
     return 0;
 }
