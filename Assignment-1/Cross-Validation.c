@@ -32,9 +32,13 @@ typedef struct set
 //     return;
 // }
 
-void WriteTestValues(SET *test)
+void WriteTestValues(SET *test[],int n)
 {
-    printf("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%d\n",test->area,test->perimeter,test->compactness,test->length_of_kernel,test->width_of_kernel,test->asymmetry_coefficient,test->length_of_kernel_groove,test->class);
+    int i;
+    for(i=0;i<n;i++){
+        printf("%f\t%f\t%f\n",test[i]->area,test[i]->perimeter,test[i]->compactness);
+    }
+
 }
 
 void ReadAll(FILE *fptr,SET *data[],int max)
@@ -68,11 +72,35 @@ int main()
     }
     printf("Works fine\n");
     // read_values(filePointer);
-    
+
     SET *data[210];
 
     ReadAll(filePointer,data,210);
 
     // WriteTestValues(data[5]);
+    int i,r=7;
+
+    // SET *test;
+    // test=data[0];
+    // printf("%f\n",test->area );
+    SET *test[210/r];
+    SET *train[210-(210/r)];
+    for(i=0;i<7;i++){
+      int j;
+      for (j=30*i;j<30*(i+1);j++){
+        test[j-(30*i)]=data[j];
+      }
+      int limit=0;
+      for (j=0;j<210;j++){
+        if(j<30*i || j>=30*(i+1)){
+          train[limit]=data[j];
+          printf("%d\t%d\n",j,limit);
+          ++limit;
+        }
+      }
+    }
+    WriteTestValues(&test,30);
+    printf("\n\n");
+    WriteTestValues(&train,180);
     return 0;
 }
