@@ -17,22 +17,6 @@ typedef struct set
 } SET;
 
 
-// void read_values(FILE *fptr)
-// {
-//     float i = 0;
-//     fscanf(fptr,"%f",&i);
-//     printf("%f\n",i);
-
-//     int count = 8;
-//     while(!feof(fptr) && count > 0)
-//     {
-//         fscanf(fptr,"%f",&i);
-//         printf("%f\n",i);
-//         --count;
-//     }
-//     return;
-// }
-
 void WriteTestValues(SET *test[],int n)
 {
     int i;
@@ -88,9 +72,13 @@ void SortUpto_K(float kon[][2],int k,int max)
         if(kon[min][0] > kon[j][0])
         {
           min = j;
+<<<<<<< HEAD
+        } 
+=======
           // Swap(&(min[0]),&(kon[j][0]));
           // Swap(&(min[1]),&(kon[j][1]));
         }
+>>>>>>> dc420e2dbd2fed8eb9b1a01bcb354e83928443fc
       }
       float temp = kon[min][0];
       kon[min][0] = kon[i][0];
@@ -102,10 +90,28 @@ void SortUpto_K(float kon[][2],int k,int max)
     }
 }
 
+int FindMaxClass(float kon[][2],SET *train[],int k,int clscount)
+{
+    int arrClassCount[clscount];
+    int i;
+    for(i=0;i<clscount;i++)
+      arrClassCount[i] = 0;
+    for(i=0;i<k;i++)
+    {
+      ++arrClassCount[train[((int)kon[i][1])]->class - 1];
+    }
+    int max = 0; 
+    for(i=1;i<clscount;i++)
+    {
+      if(arrClassCount[max] < arrClassCount[i])
+        max = i;
+    }
+    return max+1;
+}
+
 int main()
 {
-    int i,j;
-    // printf("Hello world");
+    int l,m;
     FILE *filePointer;
     filePointer = fopen("SwapedSeeds.txt","r");
 
@@ -130,21 +136,52 @@ int main()
     // printf("%f\n",test->area );
     SET *test[210/r];
     SET *train[210-(210/r)];
-    for(i=0;i<7;i++){
-      for (j=30*i;j<30*(i+1);j++){
-        test[j-(30*i)]=data[j];
+    for(l=0;l<7;l++){
+      
+      for (m=30*l;m<30*(l+1);m++){
+        test[m-(30*m)]=data[m];
       }
       int limit=0;
-      for (j=0;j<210;j++){
-        if(j<30*i || j>=30*(i+1)){
-          train[limit]=data[j];
+      for (m=0;m<210;m++){
+        if(m<30*l || m>=30*(l+1)){
+          train[limit]=data[m];
           ++limit;
         }
       }
-    }
+      printf("hello %d\n",l);
+          //////        finding k and p values    ////////
 
-    //////        finding k and p values    ////////
+      int k=9,p=2;
+      float distace_of_test;
+      int assign[210/r];
+      int true = 0;
+      // for(i=0;i<30;i++)
+      //   assign[i] = 0;
+      int i,j;
+      for(i=0;i<(210/r);i++){
+        float kon[210-210/r][2];
+        printf("hello%d  %d\n",i,210/r);
+        
+        for (j=0;j<210-(210/r);j++){
+          printf("%d\n",j);
 
+          distace_of_test=Minkowski_distance(p,train[j]->area-test[i]->area,train[j]->perimeter-test[i]->perimeter,train[j]->compactness-test[i]->compactness,train[j]->length_of_kernel-test[i]->length_of_kernel,train[j]->width_of_kernel-test[i]->width_of_kernel,train[j]->asymmetry_coefficient-test[i]->asymmetry_coefficient,train[j]->length_of_kernel_groove-test[i]->length_of_kernel_groove);
+          kon[j][0] = distace_of_test;
+          kon[j][1] = j;
+        }
+        printf("%d\n",i);
+        SortUpto_K(kon,k,210-210/r);
+        
+        assign[i] = FindMaxClass(kon,train,k,3);
+        printf("%d\t%d\n",assign[i],test[i]->class);
+        if(assign[i]==test[i]->class)
+          ++true;
+        }
+
+        printf("%d\t%f\n" ,l ,true/(210.0/r));
+
+<<<<<<< HEAD
+=======
     int k=9,p=2;
     float KNN[k];
     float distace_of_test;
@@ -171,10 +208,48 @@ int main()
         true++;
 
     }
+>>>>>>> dc420e2dbd2fed8eb9b1a01bcb354e83928443fc
 
+      
 
+    }
 
+    //////        finding k and p values    ////////
 
+    // int k=9,p=2;
+    // float distace_of_test;
+    // int assign[210/r];
+    // int true = 0;
+    // // for(i=0;i<30;i++)
+    // //   assign[i] = 0;
+    // for(i=0;i<210/r;i++){
+    //   float kon[210-210/r][2];
+    //   for (j=0;j<210-210/r;j++){
+    //     distace_of_test=Minkowski_distance(p,train[j]->area-test[i]->area,train[j]->perimeter-test[i]->perimeter,train[j]->compactness-test[i]->compactness,train[j]->length_of_kernel-test[i]->length_of_kernel,train[j]->width_of_kernel-test[i]->width_of_kernel,train[j]->asymmetry_coefficient-test[i]->asymmetry_coefficient,train[j]->length_of_kernel_groove-test[i]->length_of_kernel_groove);
+    //     kon[j][0] = distace_of_test;
+    //     kon[j][1] = j;
+    //   }
+    //   // printf("\nBefore:\n");
+    //   // for(k=0;k<9;k++)
+    //   // {
+    //   //   printf("%f\t%f\n",kon[k][0],kon[k][1]);
+    //   // }
+    //   // k = 9;
+    //   SortUpto_K(kon,k,210-210/r);
+    //   // printf("\nafter:\n");
+    //   // int k;
+    //   // for(k=0;k<9;k++)
+    //   // {
+    //   //   printf("%f\t%f\n",kon[k][0],kon[k][1]);
+    //   // }
+    //   assign[i] = FindMaxClass(kon,train,k,3);
+    //   // printf("%d\t%d\n",assign[i],test[i]->class);
+    //   if(assign[i]==test[i]->class)
+    //     ++true;
+    // }
+    // printf("\n%f\n",true/(210.0/r));
+
+    
 
 
 
