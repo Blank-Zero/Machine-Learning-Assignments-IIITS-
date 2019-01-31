@@ -166,7 +166,13 @@ int main()
       {
         printf("%f\t%f\n",kon[k][0],kon[k][1]);
       }
+      final_class=mod(kon);
+      if(test[i]->class==final_class)
+        true++;
+
     }
+
+
 
 
 
