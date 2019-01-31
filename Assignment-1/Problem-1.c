@@ -45,14 +45,16 @@ void ReadAll(FILE *fptr,SET *data[],int max)        // Function to read all valu
     }
 }
 
-float mod_f(float num)
+float mod_f(float num)      // Function for modulus of a given number
 {
     if(num<0)
         return num * (-1);
     return num;
 }
 
-float Minkowski_distance(int p,float area,float perimeter,float compactness,float length_of_kernel,float width_of_kernel,float asymmetry_coefficient,float length_of_kernel_groove){
+// function for finding the minkowski distance
+float Minkowski_distance(int p,float area,float perimeter,float compactness,float length_of_kernel,float width_of_kernel,float asymmetry_coefficient,float length_of_kernel_groove)     
+{
   double distance;
   distance=mod_f(pow(area,p))+mod_f(pow(perimeter,p))+mod_f(pow(compactness,p))+mod_f(pow(length_of_kernel,p))+mod_f(pow(width_of_kernel,p))+mod_f(pow(asymmetry_coefficient,p))+mod_f(pow(length_of_kernel_groove,p));
   distance=mod_f(pow(distance,1.0/p));
@@ -67,51 +69,50 @@ float Minkowski_distance(int p,float area,float perimeter,float compactness,floa
 //     return;
 // }
 
-void SortUpto_K(float kon[][2],int k,int max)
+
+void SortUpto_K(float kon[][2],int k,int max)       // Fucntion for findind the least values upto k in a given array
 {
-    int i;
-    int j;
+    int i,j;
     for(i=0;i<k;i++)
     {
-      int min = i;
+        int min = i;
 
-      for(j=i;j<max;j++)
-      {
-        if(kon[min][0] > kon[j][0])
+        for(j=i;j<max;j++)                  // Find the minimum value from the array
         {
-          min = j;
+            if(kon[min][0] > kon[j][0])
+            {
+                min = j;
+            }
         }
-      }
-      float temp = kon[min][0];
-      kon[min][0] = kon[i][0];
-      kon[i][0] = temp;
-      temp = kon[min][1];
-      kon[min][1] = kon[i][1];
-      kon[i][1] = temp;
-
+        float temp = kon[min][0];           // Swaping the mininum values and the least indexes
+        kon[min][0] = kon[i][0];
+        kon[i][0] = temp;
+        temp = kon[min][1];
+        kon[min][1] = kon[i][1];
+        kon[i][1] = temp;
     }
 }
 
-int FindMaxClass(float kon[][2],SET *train[],int k,int clscount)
+int FindMaxClass(float kon[][2],SET *train[],int k,int clscount)        // Function to find the class to be assigned
 {
     int arrClassCount[clscount];
     int i;
-    for(i=0;i<clscount;i++)
+    for(i=0;i<clscount;i++)                                         // Initiate the classcount value with zeros
       arrClassCount[i] = 0;
     for(i=0;i<k;i++)
     {
-      ++arrClassCount[train[((int)kon[i][1])]->class - 1];
+      ++arrClassCount[train[((int)kon[i][1])]->class - 1];          // Increament the class values from the kon array
     }
     int max = 0;
-    for(i=1;i<clscount;i++)
+    for(i=1;i<clscount;i++)                                          // Find the class with maximum matches
     {
       if(arrClassCount[max] < arrClassCount[i])
         max = i;
     }
-    return max+1;
+    return max+1;                                                   // Return the class with max value
 }
 
-float FindAccuracy(int k,int p,SET *test[],SET *train[]){
+float FindAccuracy(int k,int p,SET *test[],SET *train[]){           // Function to find Accuracy
 
   float distace_of_test;
   int assign[MAX/r];
@@ -157,7 +158,7 @@ int main()
     printf("Works fine\n");
     // read_values(filePointer);
 
-    SET *data[MAX];
+    SET *data[MAX];                                         // Data set
 
     ReadAll(filePointer,data,MAX);
 
@@ -168,8 +169,8 @@ int main()
     // SET *test;
     // test=data[0];
     // printf("%f\n",test->area );
-    SET *test[MAX/r];
-    SET *train[MAX-(MAX/r)];
+    SET *test[MAX/r];                                        // Test set
+    SET *train[MAX-(MAX/r)];                                 // Train set
 
     int k=11,p=4;
     printf("\nFor k=%d , p=%d and r=%d the accuracy is :\n\n",k,p,r);
@@ -197,7 +198,5 @@ int main()
       final_accuracy=final_accuracy+accuracy[l];
     }
     printf("Final accuracy of the dataset = %f%\n",final_accuracy/(r*1.0));
-
-
     return 0;
 }
