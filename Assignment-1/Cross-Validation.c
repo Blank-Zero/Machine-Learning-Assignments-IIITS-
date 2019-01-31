@@ -102,6 +102,25 @@ void SortUpto_K(float kon[][2],int k,int max)
     }
 }
 
+int FindMaxClass(float kon[][2],SET *train[],int k,int clscount)
+{
+    int arrClassCount[clscount];
+    int i;
+    for(i=0;i<clscount;i++)
+      arrClassCount[i] = 0;
+    for(i=0;i<k;i++)
+    {
+      ++arrClassCount[train[((int)kon[i][1])]->class - 1];
+    }
+    int max = 0; 
+    for(i=1;i<clscount;i++)
+    {
+      if(arrClassCount[max] < arrClassCount[i])
+        max = i;
+    }
+    return max+1;
+}
+
 int main()
 {
     int i,j;
@@ -146,30 +165,39 @@ int main()
     //////        finding k and p values    ////////
 
     int k=9,p=2;
-    float KNN[k];
     float distace_of_test;
     int assign[30];
+    int true = 0;
     // for(i=0;i<30;i++)
     //   assign[i] = 0;
     for(i=0;i<30;i++){
       float kon[180][2];
       for (j=0;j<180;j++){
         distace_of_test=Minkowski_distance(p,train[j]->area-test[i]->area,train[j]->perimeter-test[i]->perimeter,train[j]->compactness-test[i]->compactness,train[j]->length_of_kernel-test[i]->length_of_kernel,train[j]->width_of_kernel-test[i]->width_of_kernel,train[j]->asymmetry_coefficient-test[i]->asymmetry_coefficient,train[j]->length_of_kernel_groove-test[i]->length_of_kernel_groove);
-        // printf("%f\n",distace_of_test);
-        kon[i][0] = distace_of_test;
-        kon[i][1] = j;
+        kon[j][0] = distace_of_test;
+        kon[j][1] = j;
       }
+      // printf("\nBefore:\n");
+      // for(k=0;k<9;k++)
+      // {
+      //   printf("%f\t%f\n",kon[k][0],kon[k][1]);
+      // }
+      // k = 9;
       SortUpto_K(kon,k,180);
-      int k;
-      for(k=0;k<9;k++)
-      {
-        printf("%f\t%f\n",kon[k][0],kon[k][1]);
-      }
+      // printf("\nafter:\n");
+      // int k;
+      // for(k=0;k<9;k++)
+      // {
+      //   printf("%f\t%f\n",kon[k][0],kon[k][1]);
+      // }
+      assign[i] = FindMaxClass(kon,train,k,3);
+      // printf("%d\t%d\n",assign[i],test[i]->class);
+      if(assign[i]==test[i]->class)
+        ++true;
     }
+    printf("\n%f\n",true/30.0);
 
-
-
-
+    
 
     return 0;
 }
