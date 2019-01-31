@@ -19,16 +19,15 @@ typedef struct set    // Created sturct for storing the dataset of each element
 } SET;
 
 
-void WriteTestValues(SET *test[],int n)
+void WriteTestValues(SET *test[],int n)     // Function for writing a attribute values of a set
 {
     int i;
     for(i=0;i<n;i++){
         printf("%f\t%f\t%d\n",test[i]->area,test[i]->perimeter,test[i]->class);
     }
-
 }
 
-void ReadAll(FILE *fptr,SET *data[],int max)
+void ReadAll(FILE *fptr,SET *data[],int max)        // Function to read all values from the file and store it in the 
 {
     int i=0;
     while(!feof(fptr) && i<max)
@@ -46,10 +45,17 @@ void ReadAll(FILE *fptr,SET *data[],int max)
     }
 }
 
+float mod_f(float num)
+{
+    if(num<0)
+        return num * (-1);
+    return num;
+}
+
 float Minkowski_distance(int p,float area,float perimeter,float compactness,float length_of_kernel,float width_of_kernel,float asymmetry_coefficient,float length_of_kernel_groove){
   double distance;
-  distance=pow(area,p)+pow(perimeter,p)+pow(compactness,p)+pow(length_of_kernel,p)+pow(width_of_kernel,p)+pow(asymmetry_coefficient,p)+pow(length_of_kernel_groove,p);
-  distance=pow(distance,1.0/p);
+  distance=mod_f(pow(area,p))+mod_f(pow(perimeter,p))+mod_f(pow(compactness,p))+mod_f(pow(length_of_kernel,p))+mod_f(pow(width_of_kernel,p))+mod_f(pow(asymmetry_coefficient,p))+mod_f(pow(length_of_kernel_groove,p));
+  distance=mod_f(pow(distance,1.0/p));
   return distance;
 }
 
