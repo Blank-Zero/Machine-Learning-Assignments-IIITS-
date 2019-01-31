@@ -72,9 +72,6 @@ void SortUpto_K(float kon[][2],int k,int max)
         if(kon[min][0] > kon[j][0])
         {
           min = j;
-
-          // Swap(&(min[0]),&(kon[j][0]));
-          // Swap(&(min[1]),&(kon[j][1]));
         }
       }
       float temp = kon[min][0];
@@ -192,44 +189,6 @@ int main()
       final_accuracy=final_accuracy+accuracy[l];
     }
     printf("Final accuracy of the dataset = %f%\n",final_accuracy/(r*1.0));
-
-    //////        finding k and p values    ////////
-
-    // int k=9,p=2;
-    // float distace_of_test;
-    // int assign[210/r];
-    // int true = 0;
-    // // for(i=0;i<30;i++)
-    // //   assign[i] = 0;
-    // for(i=0;i<210/r;i++){
-    //   float kon[210-210/r][2];
-    //   for (j=0;j<210-210/r;j++){
-    //     distace_of_test=Minkowski_distance(p,train[j]->area-test[i]->area,train[j]->perimeter-test[i]->perimeter,train[j]->compactness-test[i]->compactness,train[j]->length_of_kernel-test[i]->length_of_kernel,train[j]->width_of_kernel-test[i]->width_of_kernel,train[j]->asymmetry_coefficient-test[i]->asymmetry_coefficient,train[j]->length_of_kernel_groove-test[i]->length_of_kernel_groove);
-    //     kon[j][0] = distace_of_test;
-    //     kon[j][1] = j;
-    //   }
-    //   // printf("\nBefore:\n");
-    //   // for(k=0;k<9;k++)
-    //   // {
-    //   //   printf("%f\t%f\n",kon[k][0],kon[k][1]);
-    //   // }
-    //   // k = 9;
-    //   SortUpto_K(kon,k,210-210/r);
-    //   // printf("\nafter:\n");
-    //   // int k;
-    //   // for(k=0;k<9;k++)
-    //   // {
-    //   //   printf("%f\t%f\n",kon[k][0],kon[k][1]);
-    //   // }
-    //   assign[i] = FindMaxClass(kon,train,k,3);
-    //   // printf("%d\t%d\n",assign[i],test[i]->class);
-    //   if(assign[i]==test[i]->class)
-    //     ++true;
-    // }
-    // printf("\n%f\n",true/(210.0/r));
-
-
-
 
 
     return 0;
