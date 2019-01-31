@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include<math.h>
-#define r 3     // defining r-fold
+#define r 7     // defining r-fold
 #define MAX 210   //Defining max input values
 
 typedef struct set    // Created sturct for storing the dataset of each element
