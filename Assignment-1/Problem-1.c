@@ -147,7 +147,7 @@ int main()
     int l,m;
     float final_accuracy=0;
     float accuracy[r];
-    FILE *filePointer;
+    FILE *filePointer;                                       // File pointer to get the file and its data
     filePointer = fopen("SwapedSeeds.txt","r");
 
     if(filePointer == NULL)
@@ -160,7 +160,7 @@ int main()
 
     SET *data[MAX];                                         // Data set
 
-    ReadAll(filePointer,data,MAX);
+    ReadAll(filePointer,data,MAX);                          // To get the data from filepointer
 
     fclose(filePointer);
     // WriteTestValues(data[5]);

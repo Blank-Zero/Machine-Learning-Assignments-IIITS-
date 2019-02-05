@@ -4,6 +4,7 @@
 #define data_count 1930
 #define r_value 15
 #define cls_count 10
+
 typedef struct Mat
 {
     int mat[32][32];
