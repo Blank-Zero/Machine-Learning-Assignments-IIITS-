@@ -1,15 +1,18 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<math.h>
-#define data_count 1930
-#define r_value 15
+#define data_count 1930   //Defining max input values
+#define r_value 15    // defining r-fold
 #define cls_count 10
 
-typedef struct Mat
+typedef struct Mat    // Created sturct for storing the dataset of each element
 {
+    /* data */
     int mat[32][32];
     int class;
 } MAT;
+
+    /////////////mod function//////////////
 
 float mod(float x){
   if(x<0){
@@ -18,6 +21,8 @@ float mod(float x){
   return x;
 
 }
+
+    ////////////To_Get_Matrix///////////////
 
 void GetMatrix(FILE *fptr,int arr[32][32],int *class)
 {
@@ -35,6 +40,8 @@ void GetMatrix(FILE *fptr,int arr[32][32],int *class)
     return;
 }
 
+    ////////////PrintMatrix///////////////
+
 void PrintMatrix(int arr[][32])
 {
     int i,j;
@@ -49,6 +56,8 @@ void PrintMatrix(int arr[][32])
     printf("\n\n");
     return;
 }
+
+    ////////////Sorting k values///////////////
 
 void SortUpto_K(float kon[][2],int k,int max)
 {
@@ -75,6 +84,8 @@ void SortUpto_K(float kon[][2],int k,int max)
     }
 }
 
+    ////////////Minkowski_distance///////////////
+
 float Minkowski_distance(int p,MAT *test,MAT *train){
   int l,m;
   float distance_of_test=0;
@@ -90,6 +101,8 @@ float Minkowski_distance(int p,MAT *test,MAT *train){
   return distance_of_test;
 
 }
+
+    ////////////Finding the max class for KNN///////////////
 
 int FindMaxClass(float kon[][2],MAT *train[],int k)
 {
@@ -110,6 +123,8 @@ int FindMaxClass(float kon[][2],MAT *train[],int k)
     }
     return max+1;
 }
+
+    ////////////Finding the accuracy By KNN algorithm///////////////
 
 float FindAccuracy(int k,int p,MAT *test[],MAT *train[],int l){
     int i,j;
@@ -142,12 +157,19 @@ float FindAccuracy(int k,int p,MAT *test[],MAT *train[],int l){
 }
 
 
+    ////////////R_fold_Cross_Validation///////////////
+
 void R_fold(MAT *dataset[]){
     MAT *test[data_count/r_value];
     MAT *train[data_count-(data_count/r_value)];
 	float final_accuracy = 0;
     int l,m;
+
+          ////////////Assigning K and p values///////////////
+
     int k=7,p=2;
+
+	
     for(k=0;k<10;k+=2)
 	{
 		for(p=2;p<4;p++)
@@ -210,6 +232,8 @@ int main()
     // GetMatrix(fptr,arr);
 
     // PrintMatrix(arr);
+
+
     fclose(fptr);
     R_fold(dataset);
 
