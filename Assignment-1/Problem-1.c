@@ -172,31 +172,62 @@ int main()
     SET *test[MAX/r];                                        // Test set
     SET *train[MAX-(MAX/r)];                                 // Train set
 
-    int k=11,p=4;
+    int k=2,p=3;
     printf("\nFor k=%d , p=%d and r=%d the accuracy is :\n\n",k,p,r);
 
-    for(l=0;l<r;l++){
+    // for(l=0;l<r;l++){
 
-      for (m=MAX/r*l;m<(MAX/r)*(l+1);m++){
-        test[m-((MAX/r)*l)]=data[m];
-      }
-      int limit=0;
-      for (m=0;m<MAX;m++){
-        if(m<(MAX/r)*l || m>=(MAX/r)*(l+1)){
-          train[limit]=data[m];
-          ++limit;
-        }
-      }
-          //////        finding k and p values    ////////
+      // for (m=MAX/r*l;m<(MAX/r)*(l+1);m++){
+        // test[m-((MAX/r)*l)]=data[m];
+      // }
+      // int limit=0;
+      // for (m=0;m<MAX;m++){
+        // if(m<(MAX/r)*l || m>=(MAX/r)*(l+1)){
+          // train[limit]=data[m];
+          // ++limit;
+        // }
+      // }
+          ////        finding k and p values    ////////
 
-      accuracy[l]= FindAccuracy(k,p,test,train);
-      printf("%d\t%f%\n",l+1,accuracy[l]);
+      // accuracy[l]= FindAccuracy(k,p,test,train);
+      // printf("%d\t%f%\n",l+1,accuracy[l]);
 
-    }
+    // }
 
-    for(l=0;l<r;l++){
-      final_accuracy=final_accuracy+accuracy[l];
-    }
-    printf("Final accuracy of the dataset = %f%\n",final_accuracy/(r*1.0));
-    return 0;
+    // for(l=0;l<r;l++){
+      // final_accuracy=final_accuracy+accuracy[l];
+    // }
+    // printf("Final accuracy of the dataset = %f%\n",final_accuracy/(r*1.0));
+    for(k=0;k<12;k++)
+	{
+		for(p=1;p<5;p++)
+		{
+			printf("\n\nFor k=%d, p=%d\n\n",k,p);
+			for(l=0;l<r;l++){
+
+			  for (m=MAX/r*l;m<(MAX/r)*(l+1);m++){
+				test[m-((MAX/r)*l)]=data[m];
+			  }
+			  int limit=0;
+			  for (m=0;m<MAX;m++){
+				if(m<(MAX/r)*l || m>=(MAX/r)*(l+1)){
+				  train[limit]=data[m];
+				  ++limit;
+				}
+			  }
+				  //////        finding k and p values    ////////
+
+			  accuracy[l]= FindAccuracy(k,p,test,train);
+			  // printf("%d\t%f%\n",l+1,accuracy[l]);
+
+			}
+
+			for(l=0;l<r;l++){
+			  final_accuracy=final_accuracy+accuracy[l];
+			}
+			printf("Final accuracy of the dataset = %f%\n",final_accuracy/(r*1.0));	
+			final_accuracy = 0;
+		}
+	}
+	return 0;
 }

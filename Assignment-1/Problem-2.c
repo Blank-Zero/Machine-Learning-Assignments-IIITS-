@@ -145,37 +145,47 @@ float FindAccuracy(int k,int p,MAT *test[],MAT *train[],int l){
 void R_fold(MAT *dataset[]){
     MAT *test[data_count/r_value];
     MAT *train[data_count-(data_count/r_value)];
+	float final_accuracy = 0;
     int l,m;
     int k=7,p=2;
-    int test_count=data_count/r_value;
-    int train_count=data_count-(data_count/r_value);
+    for(k=0;k<10;k+=2)
+	{
+		for(p=2;p<4;p++)
+		{
+			printf("\n\nFor k=%d,p=%d\n\n",k,p);
+			int test_count=data_count/r_value;
+			int train_count=data_count-(data_count/r_value);
 
-    float accuracy[r_value];
-    for(l=0;l<r_value;l++){
+			float accuracy[r_value];
+			for(l=0;l<r_value;l++){
 
-      for (m=test_count*l;m<test_count*(l+1);m++){
-        test[m-(test_count*l)]=dataset[m];
-        // printf("%d\t%d\n",m-(test_count*l),m );
-        //PrintMatrix(test[m-(test_count*l)]->mat);
-      }
+			  for (m=test_count*l;m<test_count*(l+1);m++){
+				test[m-(test_count*l)]=dataset[m];
+				// printf("%d\t%d\n",m-(test_count*l),m );
+				//PrintMatrix(test[m-(test_count*l)]->mat);
+			  }
 
-      int limit=0;
-      for (m=0;m<data_count;m++){
-        if(m<test_count*l || m>=test_count*(l+1)){
-          train[limit]=dataset[m];
+			  int limit=0;
+			  for (m=0;m<data_count;m++){
+				if(m<test_count*l || m>=test_count*(l+1)){
+				  train[limit]=dataset[m];
 
-          //PrintMatrix(train[limit]->mat);
-          ++limit;
-        }
+				  //PrintMatrix(train[limit]->mat);
+				  ++limit;
+				}
 
-      }
-          //////        finding k and p values    ////////
+			  }
+				  //////        finding k and p values    ////////
 
-      accuracy[l]= FindAccuracy(k,p,test,train,l);
-      printf("%d\t%f%\n",l+1,accuracy[l]);
+			  accuracy[l]= FindAccuracy(k,p,test,train,l);
+				final_accuracy += accuracy[l];
+			// printf("%d\t%f%\n",l+1,accuracy[l]);
 
-    }
-
+			}
+			printf("%f\n",final_accuracy/r_value);
+			final_accuracy = 0;
+		}
+	}
 
 }
 
