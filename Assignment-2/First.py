@@ -44,7 +44,8 @@ def FindError(testset,slope,constant):
     error = 0
     for data in testset:
         error = error + (data[len(data)-1] - LineFunc(data,slope,constant))**2
-    error = error/float(len(testset))
+        # print(error)
+    error = error/(2.0*float(len(testset)))
     return error
 
 
@@ -72,9 +73,9 @@ if __name__ == "__main__":
 
     slope_m = [0.0,0.0,0.0,0.0,0.0,0.0]
     constant_c = 0
-    learning_step = 0.001
+    learning_step = 0.01
     
-    for _ in range(1000):
+    for _ in range(10000):
         D_slope, D_const = GradientDecent(trainset,slope_m,constant_c)
         for i in range(len(slope_m)):
             slope_m[i] = slope_m[i] - learning_step*D_slope[i]
