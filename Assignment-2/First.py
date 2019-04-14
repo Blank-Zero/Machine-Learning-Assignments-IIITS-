@@ -34,10 +34,12 @@ def GradientDecent(TrainingSet,slope_m,constant_c):
             D_slope[i] = D_slope[i] + data[i] * (data[len(data)-1] - pred)
         D_const = D_const + data[len(data)-1] - pred
 
-    D_const = (-2.0/len(TrainingSet))*D_const
+    D_const = (-1.0/len(TrainingSet))*D_const
     for i in range(len(D_slope)):
-        D_slope[i] = (-2.0/len(TrainingSet))*D_slope[i]
+        D_slope[i] = (-1.0/len(TrainingSet))*D_slope[i]
 
+    # print(D_slope)
+    # print(D_const)
     return D_slope, D_const
     
 def FindError(testset,slope,constant):
@@ -73,7 +75,7 @@ if __name__ == "__main__":
 
     slope_m = [0.0,0.0,0.0,0.0,0.0,0.0]
     constant_c = 0
-    learning_step = 0.01
+    learning_step = 0.02
     
     for _ in range(10000):
         D_slope, D_const = GradientDecent(trainset,slope_m,constant_c)
