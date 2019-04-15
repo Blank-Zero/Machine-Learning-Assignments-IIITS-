@@ -78,14 +78,14 @@ def trainNetwork(network, trainSet, learningRate, n_epoch, classCount):
         print('trail:{} learningRate:{} error:{}'.format(epoch,learningRate,sumError))
 
 
-def testNetwork(network, testSet):
-    sumError = 0
-    for data in testSet:
+def calculateAccuracy(network,dataSet):
+    error = 0
+    for data in dataSet:
         outputs = forwordPropagate(network,data)
-        if (data[-1] != outputs.index(max(outputs))+1):
-            sumError += 1
-    print('test error: {}'.format(sumError/len(testSet)))
-    return sumError
+        if (int(data[-1]-1) != outputs.index(max(outputs))):
+            error += 1
+    return error/(1.0*len(dataSet))
+
 
 if __name__ == "__main__":
     # initialize the dataset
@@ -111,7 +111,7 @@ if __name__ == "__main__":
 
     # print(network[0])
     trainNetwork(network,trainSet,learningRate,20,4)
-    testNetwork(network,trainSet)
-    testNetwork(network,testSet)
+    print("\n\n\ntrainError:{}\n\n\n".format(calculateAccuracy(network,trainSet)))
+    print("\n\n\nTestError:{}\n\n\n".format(calculateAccuracy(network,testSet)))
     # for layer in network:
     #     print(layer)

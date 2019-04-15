@@ -54,7 +54,6 @@ def calculateErrors(network,target):
                     error += nextNeuron['delta'] * neuron['weights'][k] * sigmondDervFunc(neuron['output'])
                 neuron['delta'] = error
 
-
 def updateWeights(network,data,learningRate):
     inputs = data[0:-1]
     for i in range(len(network)):
@@ -65,9 +64,10 @@ def updateWeights(network,data,learningRate):
                 neuron['weights'][j] += learningRate * neuron['delta'] * inputs[j]
             neuron['weights'][-1] += learningRate * neuron['delta']
 
+
 def trainNetwork(network,trainSet,learningRate,titrations,classCount):
     for _ in range(titrations):
-        sumError = 0.0
+        sumError = 0
         for data in trainSet:
             outputs = forwordPropagation(network,data)
             target = [0 for i in range(classCount)]
@@ -83,6 +83,7 @@ def calculateAccuracy(network,dataSet):
         outputs = forwordPropagation(network,data)
         if (int(data[-1]-1) != outputs.index(max(outputs))):
             error += 1
+    print("error count:{} and len of dataset:{}".format(error,len(dataSet)))
     return error/(1.0*len(dataSet))
 
 
@@ -110,7 +111,7 @@ if __name__ == "__main__":
     hiddenUnits = 5
     classCount = 4
     trainSet = dataset[0:5218]
-    trainSet = dataset[5218:]
+    testSet = dataset[5218:]
     learningRate = 0.001
 
     for hiddenUnits in range(5,16):
@@ -121,5 +122,5 @@ if __name__ == "__main__":
         # train the network with trainset
         trainNetwork(network,trainSet,learningRate,20,4)
         print("\n\nerror with train set: {}".format(calculateAccuracy(network,trainSet)))
-        print("\n\nerror with test set: {}\n\n\n".format(calculateAccuracy(network,trainSet)))
-        PrintNetwork(network)
+        print("\n\nerror with test set: {}\n\n\n".format(calculateAccuracy(network,testSet)))
+        # PrintNetwork(network)
