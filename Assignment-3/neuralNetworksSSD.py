@@ -14,7 +14,7 @@ def createNetwork(intputSize,hiddenUnits,classCount):
 
 def lineFunc(weights,inputs):
     result = weights[-1]
-    for i in range(len(inputs)):
+    for i in range(len(inputs)-1):
         result += weights[i] * inputs[i]
     # print(result)
     return result
